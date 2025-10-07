@@ -28,3 +28,7 @@ backend/app.db
 Thumbs.db
 .vscode/
 .idea/
+*.zip
+*.7z
+*.rar
+meal-planner-check/
