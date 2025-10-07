@@ -21,22 +21,26 @@ export class AuthService {
     return this.isBrowser ? localStorage.getItem('token') : null;
   }
 
-  isLoggedIn(): boolean { return !!this.getToken(); }
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
 
-  goToLogin() { this.router.navigateByUrl('/login'); }
+  goToLogin() {
+    this.router.navigateByUrl('/login');
+  }
 
   login(email: string, password: string) {
     const body = new URLSearchParams();
-    body.set('username', email);   // OAuth2PasswordRequestForm -> 'username'
+    body.set('username', email); // FastAPI OAuth2 očekuje "username"
     body.set('password', password);
 
-    return this.http.post<{ access_token: string; token_type?: string }>(
-      `${environment.apiUrl}/auth/login`,
-      body.toString(),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-    ).pipe(
-      tap(res => this.saveToken(res.access_token))
-    );
+    return this.http
+      .post<{ access_token: string; token_type?: string }>(
+        `${environment.apiUrl}/auth/login`,
+        body.toString(),
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      )
+      .pipe(tap(res => this.saveToken(res.access_token)));
   }
 
   register(email: string, password: string) {

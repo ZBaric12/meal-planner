@@ -1,32 +1,39 @@
-<div class="page">
+<div class="wrap">
   <div class="card">
     <h1>Prijava</h1>
 
-    <form (ngSubmit)="login()" novalidate style="display:grid; gap:12px; max-width:360px;">
-      <label>Email
-        <input class="input" type="email" [(ngModel)]="email" name="email" required />
-      </label>
+    <div class="field">
+      <label>Email</label>
+      <input class="input" type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" />
+    </div>
 
-      <label>Lozinka
-        <input class="input" type="password" [(ngModel)]="password" name="password" required />
-      </label>
+    <div class="field">
+      <label>Lozinka</label>
+      <input class="input" type="password" [(ngModel)]="password" name="password" placeholder="••••••••" />
+    </div>
 
-      <button class="btn" type="submit" [disabled]="loading">Prijavi se</button>
-    </form>
+    <button class="btn primary" type="button" (click)="login()" [disabled]="loading">
+      Prijavi se
+    </button>
 
-    <h2 style="margin-top:24px;">Registracija</h2>
-    <form (ngSubmit)="register()" novalidate style="display:grid; gap:12px; max-width:360px;">
-      <label>Novi email
-        <input class="input" type="email" [(ngModel)]="rEmail" name="rEmail" required />
-      </label>
+    <hr />
 
-      <label>Nova lozinka
-        <input class="input" type="password" [(ngModel)]="rPassword" name="rPassword" required />
-      </label>
+    <h2>Registracija</h2>
 
-      <button class="btn" type="submit" [disabled]="loading">Registriraj</button>
-    </form>
+    <div class="field">
+      <label>Novi email</label>
+      <input class="input" type="email" [(ngModel)]="rEmail" name="regEmail" placeholder="novi@example.com" />
+    </div>
 
-    <div class="alert error" *ngIf="error as msg" style="margin-top:16px;">{{ msg }}</div>
+    <div class="field">
+      <label>Nova lozinka</label>
+      <input class="input" type="password" [(ngModel)]="rPassword" name="regPassword" placeholder="••••••••" />
+    </div>
+
+    <button class="btn" type="button" (click)="register()" [disabled]="loading">
+      Registriraj
+    </button>
+
+    <div class="alert error" *ngIf="error as msg">{{ msg }}</div>
   </div>
 </div>
