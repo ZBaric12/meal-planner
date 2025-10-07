@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';   // NgIf, NgFor, date pipe
-import { FormsModule } from '@angular/forms';     // ngModel
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MealService, Meal } from '../../meals/meal.service';
 import { AuthService } from '../../auth/auth.service';
@@ -8,11 +8,11 @@ import { AuthService } from '../../auth/auth.service';
 type NewMeal = { date: string; title: string; calories: number; id?: number };
 
 @Component({
-  standalone: true,
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, DatePipe], // <- VAŽNO: ngIf/ngFor/ngModel/date
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  imports: [CommonModule, FormsModule],
 })
 export class DashboardComponent implements OnInit {
   items: Meal[] = [];
@@ -35,9 +35,9 @@ export class DashboardComponent implements OnInit {
     this.load();
   }
 
-  // Odjava
+  // --- ODJAVA ---
   logout() {
-    try { this.auth.logout?.(); } catch {}
+    this.auth.logout?.();
     try { localStorage.removeItem('token'); } catch {}
     this.router.navigateByUrl('/login');
   }
@@ -45,7 +45,12 @@ export class DashboardComponent implements OnInit {
   refresh() { this.load(); }
 
   edit(m: Meal) {
-    this.form = { id: m.id, date: m.date, title: m.title, calories: m.calories };
+    this.form = {
+      id: m.id,
+      date: this.asISODate(m.date),
+      title: m.title,
+      calories: Number(m.calories ?? 0),
+    };
     this.scrollToForm();
   }
 
@@ -54,9 +59,10 @@ export class DashboardComponent implements OnInit {
   }
 
   remove(m: Meal) {
+    if (!m.id) return;
     if (!confirm('Obrisati ovaj obrok?')) return;
     this.loading = true;
-    this.api.remove(m.id!).subscribe({
+    this.api.remove(m.id).subscribe({
       next: () => {
         this.loading = false;
         this.setOk('Obrok obrisan.');
@@ -75,9 +81,9 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
 
     const payload = {
-      date: this.form.date,
+      date: this.asISODate(this.form.date), // uvijek YYYY-MM-DD
       title: this.form.title.trim(),
-      calories: +this.form.calories,
+      calories: Number(this.form.calories),
     };
 
     const req = this.form.id
@@ -142,12 +148,16 @@ export class DashboardComponent implements OnInit {
     return `${d.getFullYear()}-${m}-${day}`;
   }
 
+  /** Vrati uvijek 'YYYY-MM-DD' (prima Date ili string/ISO). */
+  private asISODate(v: string | Date): string {
+    if (!v) return this.todayISO();
+    if (v instanceof Date) return v.toISOString().slice(0, 10);
+    return v.toString().slice(0, 10);
+  }
+
   private scrollToForm() {
     requestAnimationFrame(() => {
-      document.querySelector('.form-anchor')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
+      document.querySelector('.form-anchor')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
 }

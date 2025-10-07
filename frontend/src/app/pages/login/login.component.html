@@ -2,28 +2,31 @@
   <div class="card">
     <h1>Prijava</h1>
 
-    <label>Email</label>
-    <input class="input" type="email" [(ngModel)]="email" placeholder="email" />
+    <form (ngSubmit)="login()" novalidate style="display:grid; gap:12px; max-width:360px;">
+      <label>Email
+        <input class="input" type="email" [(ngModel)]="email" name="email" required />
+      </label>
 
-    <label>Lozinka</label>
-    <input class="input" type="password" [(ngModel)]="password" placeholder="lozinka"
-           (keyup.enter)="login()" />
+      <label>Lozinka
+        <input class="input" type="password" [(ngModel)]="password" name="password" required />
+      </label>
 
-    <button class="btn" type="button" (click)="login()" [disabled]="loading">Prijavi se</button>
+      <button class="btn" type="submit" [disabled]="loading">Prijavi se</button>
+    </form>
 
-    <hr />
+    <h2 style="margin-top:24px;">Registracija</h2>
+    <form (ngSubmit)="register()" novalidate style="display:grid; gap:12px; max-width:360px;">
+      <label>Novi email
+        <input class="input" type="email" [(ngModel)]="rEmail" name="rEmail" required />
+      </label>
 
-    <h2>Registracija</h2>
+      <label>Nova lozinka
+        <input class="input" type="password" [(ngModel)]="rPassword" name="rPassword" required />
+      </label>
 
-    <label>Novi email</label>
-    <input class="input" type="email" [(ngModel)]="rEmail" placeholder="novi email" />
+      <button class="btn" type="submit" [disabled]="loading">Registriraj</button>
+    </form>
 
-    <label>Nova lozinka</label>
-    <input class="input" type="password" [(ngModel)]="rPassword" placeholder="nova lozinka"
-           (keyup.enter)="register()" />
-
-    <button class="btn" type="button" (click)="register()" [disabled]="loading">Registriraj</button>
-
-    <div class="alert error" *ngIf="error">{{ error }}</div>
+    <div class="alert error" *ngIf="error as msg" style="margin-top:16px;">{{ msg }}</div>
   </div>
 </div>

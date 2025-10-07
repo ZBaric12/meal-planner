@@ -54,7 +54,7 @@ export class LoginComponent {
     this.auth.register(this.rEmail, this.rPassword).subscribe({
       next: () => {
         this.loading = false;
-        // nakon registracije automatski prijavi korisnika
+        // odmah pokušaj login s novim kredencijalima
         this.email = this.rEmail;
         this.password = this.rPassword;
         this.login();
