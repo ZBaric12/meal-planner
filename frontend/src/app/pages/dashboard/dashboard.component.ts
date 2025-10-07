@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';   // NgIf, NgFor, date pipe
+import { FormsModule } from '@angular/forms';     // ngModel
+import { Router } from '@angular/router';
 import { MealService, Meal } from '../../meals/meal.service';
+import { AuthService } from '../../auth/auth.service';
 
-type NewMeal = { id?: number; date: string; title: string; calories: number };
+type NewMeal = { date: string; title: string; calories: number; id?: number };
 
 @Component({
+  standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  imports: [CommonModule, FormsModule],
 })
 export class DashboardComponent implements OnInit {
   items: Meal[] = [];
@@ -19,10 +25,21 @@ export class DashboardComponent implements OnInit {
   ok: string | null = null;
   error: string | null = null;
 
-  constructor(private api: MealService) {}
+  constructor(
+    private api: MealService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.load();
+  }
+
+  // Odjava
+  logout() {
+    try { this.auth.logout?.(); } catch {}
+    try { localStorage.removeItem('token'); } catch {}
+    this.router.navigateByUrl('/login');
   }
 
   refresh() { this.load(); }
@@ -58,13 +75,10 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
 
     const payload = {
-      date: this.normalizeDate(this.form.date),    // <— KLJUČNO
+      date: this.form.date,
       title: this.form.title.trim(),
       calories: +this.form.calories,
     };
-
-    // opcionalno: vidi što zapravo šaljemo
-    // console.log('POST payload', payload);
 
     const req = this.form.id
       ? this.api.update(this.form.id, payload)
@@ -83,10 +97,7 @@ export class DashboardComponent implements OnInit {
 
   load() {
     this.loading = true;
-    const from = this.normalizeDate(this.weekStart);
-    const to   = this.normalizeDate(this.weekEnd);
-
-    this.api.list(from, to).subscribe({
+    this.api.list(this.weekStart, this.weekEnd).subscribe({
       next: (res) => {
         this.items = res || [];
         this.loading = false;
@@ -131,24 +142,12 @@ export class DashboardComponent implements OnInit {
     return `${d.getFullYear()}-${m}-${day}`;
   }
 
-  /** Prihvati "YYYY-MM-DD" ili "dd.mm.yyyy." i vrati "YYYY-MM-DD" */
-  private normalizeDate(v: string): string {
-    if (!v) return v;
-    const iso = /^\d{4}-\d{2}-\d{2}$/;
-    if (iso.test(v)) return v;
-    const m = v.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\.?$/);
-    if (m) {
-      const dd = m[1].padStart(2, '0');
-      const mm = m[2].padStart(2, '0');
-      const yyyy = m[3];
-      return `${yyyy}-${mm}-${dd}`;
-    }
-    return v; // fallback
-  }
-
   private scrollToForm() {
     requestAnimationFrame(() => {
-      document.querySelector('.form-anchor')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.querySelector('.form-anchor')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
     });
   }
 }
