@@ -17,12 +17,11 @@ Omogućuje registraciju/prijavu, te dodavanje, uređivanje, brisanje i filtriran
 
 cd backend
 
-# (preporučeno) virtualno okruženje
+# virtualno okruženje
 python -m venv .venv
 # Windows:
 .\.venv\Scripts\activate
-# PowerShell ponekad traži:
-# Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
 
 # ovisnosti (ako postoji requirements.txt):
 pip install -r requirements.txt
