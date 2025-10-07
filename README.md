@@ -15,7 +15,6 @@ Omogućuje registraciju/prijavu, te dodavanje, uređivanje, brisanje i filtriran
 
 ### 1) Backend
 
-```bash
 cd backend
 
 # (preporučeno) virtualno okruženje
@@ -29,10 +28,10 @@ python -m venv .venv
 pip install -r requirements.txt
 # ili ručno:
 pip install "fastapi>=0.111" "uvicorn[standard]" sqlalchemy "passlib[bcrypt]" "python-jose[cryptography]" python-multipart pydantic "pydantic[email]"
+
+
 Pokretanje:
 
-bash
-Kopiraj kod
 uvicorn app.main:app --reload --port 8000
 API dokumentacija: http://localhost:8000/docs
 
@@ -42,9 +41,9 @@ Baza: backend/app.db se automatski stvara prvi put (u kodu je Base.metadata.crea
 
 Napomena: CORS je podešen za http://localhost:4200.
 
+
 2) Frontend
-bash
-Kopiraj kod
+   
 cd frontend
 npm i
 ng serve --open
@@ -79,6 +78,7 @@ POST /auth/login → preuzmi access_token.
 U Swaggeru klikni Authorize i zalijepi Bearer <access_token>.
 
 Kreiraj obrok preko POST /meals ili kroz UI na /dashboard.
+
 
 Konfiguracija/napomene
 SQLite je lokalna datoteka backend/app.db. Ne treba je slati; kreira se automatski.
