@@ -1,0 +1,30 @@
+﻿# --- Angular / Node ---
+node_modules/
+.angular/
+.cache/
+dist/
+tmp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Python / FastAPI ---
+backend/.venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+*.pytest_cache/
+.mypy_cache/
+.pytype/
+
+# --- Env / lokalna baza ---
+backend/.env
+backend/.env.*
+backend/app.db
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

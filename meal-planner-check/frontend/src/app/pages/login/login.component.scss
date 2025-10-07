@@ -1,0 +1,60 @@
+.page {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  .card {
+    width: min(560px, 92vw);
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  }
+  
+  h1 { margin: 0 0 4px; font-size: 28px; }
+  h2 { margin: 0 0 12px; font-size: 18px; }
+  .muted { color: var(--muted); margin: 0 0 20px; }
+  
+  .section + .section { margin-top: 16px; }
+  
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--input);
+    border: 1px solid var(--input-border);
+    color: var(--text);
+    outline: none;
+  }
+  
+  .btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--btn-border);
+    background: var(--btn);
+    color: var(--text);
+    cursor: pointer;
+    transition: .2s ease;
+  }
+  .btn.primary {
+    background: var(--primary);
+    border-color: var(--primary-border);
+  }
+  .btn:hover { filter: brightness(1.1); }
+  
+  .divider {
+    height: 1px; background: var(--line); margin: 18px 0;
+  }
+  
+  .error { color: #fca5a5; margin-top: 8px; }
+  

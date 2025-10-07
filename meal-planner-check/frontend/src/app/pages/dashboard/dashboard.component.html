@@ -1,0 +1,95 @@
+<div class="wrap">
+    <div class="card">
+      <h1>Tvoj tjedni plan</h1>
+  
+      <div class="filters">
+        <div class="field">
+          <label>Od</label>
+          <input class="input"
+                 type="date"
+                 ngSkipHydration
+                 [(ngModel)]="weekStart">
+        </div>
+  
+        <div class="field">
+          <label>Do</label>
+          <input class="input"
+                 type="date"
+                 ngSkipHydration
+                 [(ngModel)]="weekEnd">
+        </div>
+  
+        <button class="btn" (click)="refresh()" [disabled]="loading">Osvježi</button>
+      </div>
+  
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Naziv</th>
+          <th>kcal</th>
+          <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let m of items">
+          <td>{{ m.date }}</td>
+          <td>{{ m.title }}</td>
+          <td>{{ m.calories }}</td>
+          <td class="actions">
+            <button class="btn ghost" (click)="edit(m)">Uredi</button>
+            <button class="btn ghost danger" (click)="remove(m)">Obriši</button>
+          </td>
+        </tr>
+        <tr *ngIf="!items.length">
+          <td colspan="4" class="empty">Nema zapisa u ovom rasponu.</td>
+        </tr>
+        </tbody>
+      </table>
+  
+      <h2>Dodaj obrok</h2>
+  
+      <div class="form-anchor"></div>
+  
+      <div class="form-grid">
+        <div class="field">
+          <label>Datum</label>
+          <input class="input"
+                 type="date"
+                 ngSkipHydration
+                 [(ngModel)]="form.date"
+                 name="date"
+                 required>
+        </div>
+  
+        <div class="field wide">
+          <label>Naziv</label>
+          <input class="input"
+                 type="text"
+                 [(ngModel)]="form.title"
+                 name="title"
+                 required>
+        </div>
+  
+        <div class="field">
+          <label>kcal</label>
+          <input class="input"
+                 type="number"
+                 [(ngModel)]="form.calories"
+                 name="calories"
+                 required>
+        </div>
+  
+        <div class="actions-row">
+          <button class="btn" (click)="save()" [disabled]="loading">
+            {{ form.id ? 'Spremi' : 'Dodaj' }}
+          </button>
+          <button class="btn ghost" *ngIf="form.id" (click)="cancelEdit()">Odustani</button>
+        </div>
+      </div>
+  
+      <div class="alert ok" *ngIf="ok as msg">{{ msg }}</div>
+      <div class="alert error" *ngIf="error as msg">{{ msg }}</div>
+    </div>
+  </div>
+  

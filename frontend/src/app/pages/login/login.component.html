@@ -1,0 +1,39 @@
+<div class="wrap">
+  <div class="card" style="max-width: 560px; margin-inline: auto;">
+    <h1>Prijava</h1>
+
+    <div class="field">
+      <label>Email</label>
+      <input class="input" type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="field">
+      <label>Lozinka</label>
+      <input class="input" type="password" [(ngModel)]="password" name="password" placeholder="••••••••" />
+    </div>
+
+    <div class="actions-row" style="justify-content: flex-end;">
+      <button class="btn primary" (click)="login()">Prijavi se</button>
+    </div>
+
+    <hr style="border: 0; height: 1px; background: #2a3344; margin: 24px 0;" />
+
+    <h2>Registracija</h2>
+
+    <div class="field">
+      <label>Novi email</label>
+      <input class="input" type="email" [(ngModel)]="rEmail" name="rEmail" placeholder="new.user@example.com" />
+    </div>
+
+    <div class="field">
+      <label>Nova lozinka</label>
+      <input class="input" type="password" [(ngModel)]="rPassword" name="rPassword" placeholder="••••••••" />
+    </div>
+
+    <div class="actions-row" style="justify-content: flex-end;">
+      <button class="btn" (click)="register()">Registriraj</button>
+    </div>
+
+    <div class="alert error" *ngIf="error as msg" style="margin-top:16px;">{{ msg }}</div>
+  </div>
+</div>
